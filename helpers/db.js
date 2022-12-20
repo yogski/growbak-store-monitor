@@ -6,19 +6,17 @@ import { JSONFile } from 'lowdb/node'
 
 // LowDB implementation for monitoring
 export default class GrowbakDB {
-  constructor() {
+  constructor(dbName) {
     const __dbDirname = dirname(fileURLToPath(import.meta.url));
-    const mainFile = join(__dbDirname,'..', 'lowdb', 'main-db.json');
-    console.log(`Low DB writing in ${mainFile}.`)
+    const mainFile = join(__dbDirname,'..', 'lowdb', `${dbName}.json`);
+    const adapter = new JSONFile(mainFile);
+    this.db = new Low(adapter);
+    this.init();
+    this.db.data = this.db.data || {}
+    console.log(`Low DB is using ${mainFile}.`)
   }
 
-
+  async init() {
+    await this.db.read()
+  }
 }
-
-// handle path and multiple files
-
-// Configure lowdb to write to JSONFile
-const adapter = new JSONFile(file);
-const db = new Low(adapter);
-await db.read()
-db.data = db.data || { stores: {} }
