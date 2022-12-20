@@ -1,4 +1,3 @@
-import { parse } from "dotenv";
 import got from "got";
 
 export default class ShopeeAPI {

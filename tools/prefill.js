@@ -82,8 +82,8 @@ try {
       console.log(`Fetching extra pages: ${j} of ${shopList.maxOffset - 1}`)
       const moreShops = await ShopeeAPI.getShopsByKeyword(args.argv._[0],requestLimit,j,requestConfig);
       for (let jj=0; jj<moreShops.shops.length; jj++) {
-        if (!shopDB.db.data.shops[shopList.shops[jj].shopid]) {
-          shopDB.db.data.shops[shopList.shops[jj].shopid] = shopList.shops[jj]
+        if (!shopDB.db.data.shops[moreShops.shops[jj].shopid]) {
+          shopDB.db.data.shops[moreShops.shops[jj].shopid] = moreShops.shops[jj]
           newDataCount++
         }
       }
@@ -93,7 +93,6 @@ try {
     }
   }
 
-  console.log(`Added ${newDataCount} shops to database...`)
 } catch (error) {
   console.log(error);
 }
