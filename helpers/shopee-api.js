@@ -11,8 +11,9 @@ export default class ShopeeAPI {
    */
   static async getShopsByKeyword(searchKeyword, displayLimit = 10, offset = 0, config = {}) {
     try {
+      const getShopsByKeywordBaseURL = "https://shopee.co.id/api/v4/search/search_user";
       let shopsFetched = await got.get(
-        "https://shopee.co.id/api/v4/search/search_user",
+        getShopsByKeywordBaseURL,
         {
           searchParams : {
             keyword : searchKeyword,
@@ -74,45 +75,6 @@ export default class ShopeeAPI {
     } catch (error) {
       console.log(error);
     }
-    // example API output
-    /*
-    {
-      "shopname": "Nadiraa Hijab Official Shop",
-      "status": 1,
-      "country": "id",
-      "followed": null,
-      "follower_count": 538743,
-      "following_count": 1016,
-      "is_official_shop": true,
-      "last_login_time": 1671257577,
-      "nickname": "Nadiraa Hijab Official Shop",
-      "pickup_address_id": 2098934,
-      "portrait": "290c10ae23901c466d7df96c6b63adf8",
-      "products": 143,
-      "response_rate": 82,
-      "response_time": 7661,
-      "score": 552440,
-      "shop_rating": 4.838256,
-      "shopee_verified_flag": 0,
-      "show_official_shop_label": true,
-      "show_shopee_verified_label": false,
-      "userid": 23017999,
-      "shopid": 23016663,
-      "username": "nadiraa_hijab",
-      "data": null,
-      "json_data": "",
-      "adsid": 0,
-      "recall_type": 6,
-      "customisation": null,
-      "banner_ads": null,
-      "ps_plus": false,
-      "items": null,
-      "shop_vouchers": null,
-      "search_info": null,
-      "bff_info": null
-    }
-    */
-
   }
 
   static async getShopCategoriesByShopId(shopId) {
