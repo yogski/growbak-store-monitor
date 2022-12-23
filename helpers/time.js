@@ -4,4 +4,8 @@ export default class TimeHelper {
         setTimeout(() => { resolve('') }, ms);
     })
   }
+
+  static unixTimestamp() {
+    return Math.floor(Date.now() / 1000);
+  }
 }

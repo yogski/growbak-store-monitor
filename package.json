@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lowdb-init": "mkdir lowdb && touch ./lowdb/shop-db.json"
+    "lowdb-init": "mkdir lowdb && touch ./lowdb/shop-db.json && touch ./lowdb/shop-product-db.json && touch ./lowdb/product-last-saved-db.json"
   },
   "keywords": [
     "e-commerce, monitoring, cron"

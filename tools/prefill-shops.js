@@ -5,11 +5,14 @@ import yargs from 'yargs';
 import MessageHelper from '../helpers/message.js';
 
 /*
-prefill.js 
-Fetch user based on search term, then save it to DB. 
-Used for determine which item will be monitored.
+===================================================================
+prefill-shops.js 
+Populate database shop-db.json with shops based on search term.
+Used for determine which shops will be monitored.
+shop-db.json will store essential data and mostly unchanged like username and ID.
 
 Run this script if you are using Growbak for the first time.
+===================================================================
 */
 
 const args = yargs(process.argv.slice(2));
@@ -17,7 +20,7 @@ let requestLimit = 10;
 let requestConfig = {}
 
 if (Object.keys(args.argv).length <= 2) {
-  MessageHelper.PrefillHelp()
+  MessageHelper.PrefillShopHelp()
   process.exit()
 } else {
   for (const argKey in args.argv) {
@@ -53,6 +56,7 @@ let shopDB;
 try {
   shopDB = new GrowbakDB("shop-db");
   if (!shopDB.db.data.shops) { shopDB.db.data.shops = {} }
+  if (!shopDB.db.data.summary) { shopDB.db.data.summary = {} }  
 } catch (error) {  
   console.log(error);
 }
@@ -72,10 +76,11 @@ try {
     if (!shopDB.db.data.shops[shopList.shops[i].shopid]) {
       shopDB.db.data.shops[shopList.shops[i].shopid] = shopList.shops[i]
       newDataCount++
+      console.log("Writing to Database...")
+      await shopDB.db.write()
     }
   }
-  console.log("Writing to Database...")
-  await shopDB.db.write()
+  
 
   if (shopList.maxOffset > 1) {
     for (let j=1; j<shopList.maxOffset; j++) {
@@ -85,14 +90,21 @@ try {
         if (!shopDB.db.data.shops[moreShops.shops[jj].shopid]) {
           shopDB.db.data.shops[moreShops.shops[jj].shopid] = moreShops.shops[jj]
           newDataCount++
+          console.log("Writing to Database...")
+          await shopDB.db.write()    
         }
       }
       await TimeHelper.delay(Math.log10((2*j - 1) * 1000) * 500);
-      console.log("Writing to Database...")
-      await shopDB.db.write()
     }
   }
 
+  // recount database
+  console.log("summarizing data...")
+  shopDB.db.data.summary.shop_count = Object.keys(shopDB.db.data.shops).length;
+  shopDB.db.data.summary.total_product_count = Object.entries(shopDB.db.data.shops).reduce((acc, arr) => acc + arr[1].product_count, 0)
+  await shopDB.db.write()
+
+  console.log("Done!")
 } catch (error) {
   console.log(error);
 }

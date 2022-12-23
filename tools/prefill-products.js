@@ -5,43 +5,44 @@ import yargs from 'yargs';
 import MessageHelper from '../helpers/message.js';
 
 /*
-prefill.js 
-Fetch user based on search term, then save it to DB. 
-Used for determine which item will be monitored.
+prefill-products.js 
+Fill information about shop categories and products.
+It will contain essential and rarely changing information like category ID and product ID.
 
-Run this script if you are using Growbak for the first time.
+Run this after prefill-shops.js.
 */
 
 const args = yargs(process.argv.slice(2));
 let requestLimit = 10;
 let requestConfig = {}
+let queryConfig = {
+  order: "asc",
+  sort: "shop_id",
+  refresh: false,
+  list: false,
+  select: undefined
+}
 
 if (Object.keys(args.argv).length <= 2) {
-  MessageHelper.PrefillHelp()
+  MessageHelper.PrefillProductsHelp()
   process.exit()
 } else {
-  for (const argKey in args.argv) {
-    switch (argKey) {
-      case "min-follower":
-        requestConfig["minFollower"] = args.argv[argKey]
+  for (const key in args.argv) {
+    switch (key) {
+      case "sort":
+        queryConfig["sort"] = args.argv[key]
         break;
-      case "max-follower":
-        requestConfig["maxFollower"] = args.argv[argKey]
+      case "order":
+        queryConfig["order"] = args.argv[key]
         break;
-      case "min-rating":
-        requestConfig["minRating"] = args.argv[argKey]
+      case "select":
+        queryConfig["select"] = args.argv[key]
         break;
-      case "max-rating":
-        requestConfig["maxRating"] = args.argv[argKey]
+      case "r":
+        queryConfig["refresh"] = true
         break;
-      case "is-official":
-        requestConfig["isOfficial"] = true
-        break;
-      case "f":
-        requestConfig["isOfficial"] = true
-        break;
-      case "limit":
-        requestLimit = args.argv[argKey]
+      case "l":
+        queryConfig["list"] = true
         break;
       default:
         break;
@@ -49,9 +50,13 @@ if (Object.keys(args.argv).length <= 2) {
   }
 }
 
-let shopDB;
+let shopDB, shopProductDB;
 try {
   shopDB = new GrowbakDB("shop-db");
+  if (!shopDB.db.data.shops) { shopDB.db.data.shops = {} }
+  if (!shopDB.db.data.summary) { shopDB.db.data.summary = {} }  
+
+  shopProductDB = new GrowbakDB("shop-product-db");
   if (!shopDB.db.data.shops) { shopDB.db.data.shops = {} }
 } catch (error) {  
   console.log(error);

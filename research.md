@@ -26,21 +26,61 @@
   - product IDs
   - category IDs
 
-Example JSON for **main-db.json**
+Example JSON for **shop-db.json**
 ```
-stores : {
-  storeId1 : {
-    categoryId1 : [
-      productId1,
-      productId2,
-      productId3,
-      ...
-    ],
-    categoryId2 : [...]
+stores :{
+  "22947618": {
+    "shopname": "Some Store",
+    "country": "id",
+    "follower_count": 12830,
+    "is_official_shop": false,
+    "nickname": "Some Store",
+    "userid": 22949002,
+    "shopid": 22947618,
+    "username": "some_store",
+    "rating": 5,
+    "score": 3155,
+    "product_count": 50
   },
-  storeId2 : {...}
+},
+summary : {
+  shop_count : 1,
+  total_product_count : 50
+} 
+```
+Example JSON for **shop-product-db.json**
+```
+shops : {
+  "shopid182736" : {
+    "productId2783" : {
+      [
+        timestamp : 
+        deltaSold : (periodSold - periodSold from last saved item)
+        deltaLikes : (likes now - likes from last saved)
+        deltaStock : 
+      ]
+
+    }
+  }
 }
 ```
+
+Example JSON for **product-last-saved-db.json**
+```
+shops : {
+  "182736" : {
+    last_updated : 387216387, // unix timestamp
+    category_ids : {
+      "3265383" : "New Arrival",
+      "3128735" : "Alat Dapur",
+      "7231936" : "Toiletries"
+    },
+  }
+}
+```
+Use `Object.keys(db.data.shops[shop_id][category_ids])` to get list of `category_id`.
+Or just search without category_id, will display all products anyway
+
 
 Example DB for **stores-db.json**
 ```

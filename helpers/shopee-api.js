@@ -1,4 +1,5 @@
 import got from "got";
+import TimeHelper from "./time";
 
 export default class ShopeeAPI {
   /**
@@ -67,7 +68,10 @@ export default class ShopeeAPI {
             nickname : shop.nickname,
             userid : shop.userid,
             shopid : shop.shopid,
-            username : shop.username
+            username : shop.username,
+            rating : shop.shop_rating,
+            score : shop.score,
+            product_count : shop.products
           }
         })
       } ;
@@ -93,8 +97,61 @@ export default class ShopeeAPI {
     */
   }
 
-  static async getProductsByShopIdAndCategoryId (shopId, categoryId) {
+  static async getProductsByShopIdAndCategoryId (shopId, categoryId = -1, config = {}) {
+    const getProductsBaseURL = "https://shopee.co.id/api/v4/shop/search_items";
+    const SET_LIMIT = config.limit || 30;
+    const SET_OFFSET = config.offset || 0;
+    const SET_ORDER = config.order || "desc";
+    const SET_SORT = config.sort || "price"; // known available : "pop", "price"
+    let productsFetched = await got.get(
+      getProductsBaseURL,
+      {
+        searchParams : {
+          filter_sold_out : 0,
+          limit : SET_LIMIT,
+          offset : SET_OFFSET,
+          order : SET_ORDER,
+          shopid : shopId,
+          sort_by : SET_SORT,
+          shop_category_id : categoryId,
+          use_case : 1
+        },
+        headers : {
+          "user-agent" : "PostmanRuntime/7.29.2"
+        }
+      }
+    );
 
+    let parsedProducts = JSON.parse(productsFetched.body);
+
+    if (parsedProducts.error > 0) {
+      throw new Error("[ERROR] Error API response from Shopee")
+    }
+
+    return {
+      count : parsedProducts.total_count || 0,
+      shopId : shopId,
+      timestamp : TimeHelper.unixTimestamp(),
+      products : parsedProducts.items
+      .filter((product) => product.item_basic.status >= 1)
+      .map((product) => { return {
+        itemId : product.item_basic.itemid,
+        name : product.item_basic.name,
+        lastUpdate : product.item_basic.ctime,
+        currency : product.item_basic.currency,
+        status : product.item_basic.item_status,
+        stock : product.item_basic.stock,
+        sold : product.item_basic.sold,
+        totalSold : product.item_basic.historical_sold,
+        likesCount : product.item_basic.liked_count,
+        price : product.item_basic.price,
+        // priceBeforeDiscount : product.item_basic.price_before_discount,
+        // discount : product.item_basic.raw_discount,
+        averageRating : product.item_basic.item_rating.rating_star || 0,
+        ratingCount : product.item_basic.item_rating.rating_count[0] || 0,
+        ratingDetails : product.item_basic.item_rating.rating_count.slice(1)
+      } })
+    }
     // example API output
     /*
       {
@@ -105,59 +162,11 @@ export default class ShopeeAPI {
               "shopid": 66654245,
               "name": "NUZ Jilbab Sport Nadira Jersey Daily Hijab Sporty Premium I Kerudung Olahraga By Shamira",
               "label_ids": [
-                  1000167,
-                  1000211,
-                  1000206,
-                  1000544,
-                  1000584,
-                  1001176,
-                  1011707,
-                  1012617,
-                  1012616,
-                  1012618,
-                  1012619,
-                  1012469,
-                  1012482,
-                  1012468,
-                  1012706,
-                  1012709,
-                  1012710,
-                  1012711,
-                  1012708,
-                  1013298,
-                  1013398,
-                  1013853,
-                  1013478,
-                  1013625,
-                  1014369,
-                  1014368,
-                  1014385,
-                  1013602,
-                  1068674,
-                  1068675,
-                  1400025088,
-                  700085134,
-                  700066224,
-                  1400085050,
-                  700066226,
-                  1400085065,
-                  700066574,
-                  700020158,
-                  1000031,
-                  1000668,
-                  1000006,
-                  1015914,
-                  700085500,
-                  700085499,
-                  1143704,
                   1115189
               ],
               "image": "sg-11134201-22100-3sge3ah7zwiv01",
               "images": [
                   "sg-11134201-22100-3sge3ah7zwiv01",
-                  "sg-11134201-22100-dux6rpt7zwivdf",
-                  "sg-11134201-22100-0qkilf77zwiv36",
-                  "sg-11134201-22100-ta0hf8n8zwiv00"
               ],
               "currency": "IDR",
               "stock": 1200,
