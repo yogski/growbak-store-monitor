@@ -22,9 +22,13 @@
 3. 
 
 ## What to store
-- Store ID
-  - product IDs
-  - category IDs
+- Shop DB : general information of a store
+- Shop Product DB : List of product and its stats in a store
+- Store Performance DB: summary of store performance, basically sum of its products and stats as well
+- Product Last Saved DB : snapshot of product information, which will be compared to newer data
+- Config DB : store configuration for Growbak
+  - maxDailyRequests : max limit of daily requests. need more reseach, but 1000 requests/day seems reasonable
+  - requestCount : counter of current request, reset to 0 at 00:00 system time
 
 Example JSON for **shop-db.json**
 ```
@@ -58,41 +62,43 @@ shops : {
         deltaSold : (periodSold - periodSold from last saved item)
         deltaLikes : (likes now - likes from last saved)
         deltaStock : 
-      ]
-
-    }
+      ],
+      [...]
+    }, 
+    {...}
   }
+},
+summary : {
+  shop_count : 2,
+  total_product_count : 333
 }
 ```
 
 Example JSON for **product-last-saved-db.json**
 ```
-shops : {
-  "182736" : {
+products : {
+  "product182736" : {
     last_updated : 387216387, // unix timestamp
-    category_ids : {
-      "3265383" : "New Arrival",
-      "3128735" : "Alat Dapur",
-      "7231936" : "Toiletries"
-    },
-  }
+    name : "product name"
+    status : 1
+    stock : 29
+    sold : 11
+    total_sold : 380
+    likes_count : 3
+    price : 73200000
+    average_rating : 4.5
+    rating_count : 15
+    rating_details : [1,2,1,1,10]
+  },
+  {...}
 }
 ```
-Use `Object.keys(db.data.shops[shop_id][category_ids])` to get list of `category_id`.
-Or just search without category_id, will display all products anyway
 
-
-Example DB for **stores-db.json**
+Example DB for **config-db.json**
 ```
-stores : {
-  storeId1 : {
-    shopId : 219837,
-    userId : 141378,
-    username : "toko_jeng",
-    products : 800,
-    country : "id",
-  },
-  storeId2 : {...}
+config : {
+  max_daily_request : 1000,
+  request_count : 31
 }
 ```
 

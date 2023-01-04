@@ -48,3 +48,57 @@ export default class GrowbakDB {
     }
   }
 }
+
+export const initShopDB = () => {
+  try {
+    let shopDB = new GrowbakDB("shop-db");
+    if (!shopDB.db.data.shops) { shopDB.db.data.shops = {} }
+    if (!shopDB.db.data.summary) { shopDB.db.data.summary = {} }
+    return shopDB;
+  } catch (error) {  
+    throw new Error(error);
+  }
+}
+
+export const initShopProductDB = () => {
+  try {
+    let shopDB = new GrowbakDB("shop-product-db");
+    if (!shopDB.db.data.shops) { shopDB.db.data.shops = {} }
+    if (!shopDB.db.data.summary) { shopDB.db.data.summary = {} }
+    return shopDB;
+  } catch (error) {  
+    throw new Error(error);
+  }
+}
+
+export const initShopPerformanceDB = () => {
+  try {
+    let shopDB = new GrowbakDB("shop-performance-db");
+    if (!shopDB.db.data.shops) { shopDB.db.data.shops = {} }
+    if (!shopDB.db.data.summary) { shopDB.db.data.summary = {} }
+    return shopDB;
+  } catch (error) {  
+    throw new Error(error);
+  }
+}
+
+export const initProductLastSavedDB = () => {
+  try {
+    let lastProductDB = new GrowbakDB("product-last-saved-db");
+    if (!lastProductDB.db.data.products) { shopDB.db.data.products = {} }
+    if (!lastProductDB.db.data.summary) { lastProductDB.db.data.summary = {} }
+    return lastProductDB;
+  } catch (error) {  
+    throw new Error(error);
+  }
+}
+
+export const initConfigDB = () => {
+  try {
+    let configDB = new GrowbakDB("config-db");
+    if (!configDB.db.data.config) { configDB.db.data.config = {} }
+    return configDB;
+  } catch (error) {  
+    throw new Error(error);
+  }
+}

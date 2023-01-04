@@ -101,7 +101,7 @@ export default class ShopeeAPI {
     const getProductsBaseURL = "https://shopee.co.id/api/v4/shop/search_items";
     const SET_LIMIT = config.limit || 30;
     const SET_OFFSET = config.offset || 0;
-    const SET_ORDER = config.order || "desc";
+    const SET_ORDER = config.order || "desc"; // known available : "asc", "desc"
     const SET_SORT = config.sort || "price"; // known available : "pop", "price"
     let productsFetched = await got.get(
       getProductsBaseURL,
@@ -114,7 +114,7 @@ export default class ShopeeAPI {
           shopid : shopId,
           sort_by : SET_SORT,
           shop_category_id : categoryId,
-          use_case : 1
+          use_case : 1 // leave this be.
         },
         headers : {
           "user-agent" : "PostmanRuntime/7.29.2"
@@ -152,129 +152,5 @@ export default class ShopeeAPI {
         ratingDetails : product.item_basic.item_rating.rating_count.slice(1)
       } })
     }
-    // example API output
-    /*
-      {
-          "itemid": 15094166097,
-          "shopid": 66654245,
-          "item_basic": {
-              "itemid": 15094166097,
-              "shopid": 66654245,
-              "name": "NUZ Jilbab Sport Nadira Jersey Daily Hijab Sporty Premium I Kerudung Olahraga By Shamira",
-              "label_ids": [
-                  1115189
-              ],
-              "image": "sg-11134201-22100-3sge3ah7zwiv01",
-              "images": [
-                  "sg-11134201-22100-3sge3ah7zwiv01",
-              ],
-              "currency": "IDR",
-              "stock": 1200,
-              "status": 1,
-              "ctime": 1666316078,
-              "sold": 1214,
-              "historical_sold": 1514,
-              "liked": false,
-              "liked_count": 162,
-              "catid": 100014,
-              "brand": "",
-              "cmt_count": 329,
-              "flag": 196608,
-              "cb_option": 0,
-              "item_status": "normal",
-              "price": 1099900000,
-              "price_min": 1099900000,
-              "price_max": 1099900000,
-              "price_min_before_discount": 1500000000,
-              "price_max_before_discount": 1500000000,
-              "price_before_discount": 1500000000,
-              "has_lowest_price_guarantee": false,
-              "show_discount": 27,
-              "raw_discount": 27,
-              "discount": "27%",
-              "size_chart": "",
-              "tier_variations": [
-                  {
-                      "name": "WARNA",
-                      "options": [
-                          "HITAM",
-                          "COKSU",
-                          "MOCCA",
-                          "MILO",
-                          "DARK CHOCO",
-                          "PUTIH",
-                          "NAVY",
-                          "DARK GREY",
-                          "SILVER",
-                          "MAROON"
-                      ],
-                      "images": [
-                          "sg-11134201-22100-68anys5b1wiv97",
-                          "sg-11134201-22100-oz6sb8fc1wiva9",
-                          "sg-11134201-22100-1skh4cnc1wivdc",
-                          "sg-11134201-22100-hpch1ruc1wiv8b",
-                          "sg-11134201-22100-3sc4az4c1wivc5",
-                          "sg-11134201-22100-sucqfuke1wiv0b",
-                          "sg-11134201-22100-kwshi4be1wiv01",
-                          "sg-11134201-22100-qj6pckvd1wiv1e",
-                          "sg-11134201-22100-wtmg8ehd1wiv87",
-                          "sg-11134201-22100-cikjwfwq1wiv09"
-                      ],
-                      "type": 0
-                  }
-              ],
-              "item_rating": {
-                  "rating_star": 4.537993920972644,
-                  "rating_count": [
-                      329,
-                      8,
-                      8,
-                      21,
-                      54,
-                      238
-                  ],
-                  "rcount_with_context": 117,
-                  "rcount_with_image": 44
-              },
-              "item_type": 0,
-              "reference_item_id": "",
-              "transparent_background_image": "",
-              "is_adult": false,
-              "badge_icon_type": 0,
-              "shopee_verified": true,
-              "is_official_shop": false,
-              "show_official_shop_label": false,
-              "show_shopee_verified_label": true,
-              "show_official_shop_label_in_title": false,
-              "is_cc_installment_payment_eligible": false,
-              "is_non_cc_installment_payment_eligible": false,
-              "show_free_shipping": false,
-              "bundle_deal_id": 0,
-              "can_use_bundle_deal": false,
-              "welcome_package_type": 0,
-              "can_use_wholesale": false,
-              "is_preferred_plus_seller": false,
-              "shop_location": "KAB. TASIKMALAYA",
-              "has_model_with_available_shopee_stock": false,
-              "can_use_cod": true,
-              "is_on_flash_sale": false,
-              "is_mart": false,
-              "deep_discount_skin": {
-                  "skin_id": 0,
-                  "start_time": 0,
-                  "end_time": 0,
-                  "skin_data": {
-                      "promo_label": {
-                          "promotion_price": "Rp 10.700",
-                          "hidden_promotion_price": "Rp ?0.700",
-                          "start_time": 1671901200,
-                          "end_time": 1671987599
-                      }
-                  }
-              },
-              "is_service_by_shopee": false
-          }
-      }
-    */
   }
 }
