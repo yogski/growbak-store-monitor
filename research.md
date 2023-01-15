@@ -34,6 +34,7 @@ Example JSON for **shop-db.json**
 ```
 stores :{
   "22947618": {
+    "last_updated": 1982639213, // for sorting purpose
     "shopname": "Some Store",
     "country": "id",
     "follower_count": 12830,
@@ -62,6 +63,8 @@ shops : {
         deltaSold : (periodSold - periodSold from last saved item)
         deltaLikes : (likes now - likes from last saved)
         deltaStock : 
+        currentPrice : (for reference in future. because revenue = lastPrice * deltaSold)
+        deltaReview : []
       ],
       [...]
     }, 
@@ -87,8 +90,7 @@ products : {
     likes_count : 3
     price : 73200000
     average_rating : 4.5
-    rating_count : 15
-    rating_details : [1,2,1,1,10]
+    rating_details : [15,1,2,1,1,10] // designed such that ratingTotal = rating_details[0], rating1Star = rating_details[1], etc
   },
   {...}
 }

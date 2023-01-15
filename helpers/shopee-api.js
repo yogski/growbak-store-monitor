@@ -61,6 +61,7 @@ export default class ShopeeAPI {
         .filter((shop) => shop.status === 1)
         .map((shop) => {
            return {
+            last_updated : TimeHelper.unixTimestamp() - 1_000_000, // initialized to make sure it's monitored early on
             shopname : shop.shopname,
             country : shop.country,
             follower_count : shop.follower_count,
