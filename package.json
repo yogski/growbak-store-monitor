@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lowdb-init": "mkdir lowdb && touch ./lowdb/shop-db.json && touch ./lowdb/shop-product-db.json && touch ./lowdb/product-last-saved-db.json && touch ./lowdb/config-db.json"
+    "init:lowdb": "mkdir lowdb && touch ./lowdb/shop-db.json && touch ./lowdb/shop-product-db.json && touch ./lowdb/product-last-saved-db.json && touch ./lowdb/config-db.json",
+    "init:shops": "node ./tools/prefill-shops.js"
   },
   "keywords": [
     "e-commerce, monitoring, cron"

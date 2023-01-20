@@ -1,5 +1,5 @@
 import got from "got";
-import TimeHelper from "./time";
+import TimeHelper from "./time.js";
 
 export default class ShopeeAPI {
   /**

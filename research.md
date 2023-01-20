@@ -104,5 +104,16 @@ config : {
 }
 ```
 
+## Shopee Pricing
+Rolex price 30316300000000 => 303.163.000
+Casio 30400000000 => 304.000
+Hublot Big Bang 25954200000000 => 259.542.000
+
+always pad 0 to 8 digits
+hypothesis : reduce 8 digits of zero to 3
+
+Anting COD 7230000000 => 72.300 (correct)
+current hypothesis hold
+
 ## Info
 - Product detail URL : https://shopee.co.id/product/{shop ID}/{item ID}

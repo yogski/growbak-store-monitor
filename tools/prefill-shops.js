@@ -21,7 +21,7 @@ let requestConfig = {}
 
 if (Object.keys(args.argv).length <= 2) {
   MessageHelper.PrefillShopHelp()
-  process.exit()
+  process.exit(0);
 } else {
   for (const argKey in args.argv) {
     switch (argKey) {
@@ -66,7 +66,7 @@ try {
   const shopList = await ShopeeAPI.getShopsByKeyword(args.argv._[0],requestLimit,0,requestConfig);
   if (shopList.shops.length === 0 && shopList.maxOffset <= 1) {
     console.log(`No entries found for ${args.argv._[0]}. Exiting...`)
-    process.exit()
+    process.exit(0)
   } else {
     console.log(`${shopList.maxOffset * requestLimit}+ entries found. Processing...`)
   }

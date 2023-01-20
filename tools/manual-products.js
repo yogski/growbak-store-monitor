@@ -23,7 +23,7 @@ try {
   productDB = new GrowbakDB("shop-product-db");
 } catch (error) {  
   console.error("[ERROR] LowDB Error",error);
-  process.exit();
+  process.exit(0);
 }
 
 try {
@@ -45,7 +45,7 @@ try {
   }
   if (shopList.shops.length === 0 && shopList.maxOffset <= 1) {
     console.log(`No entries found for ${args.argv._[0]}. Exiting...`)
-    process.exit()
+    process.exit(0)
   } else {
     console.log(`${shopList.maxOffset * requestLimit}+ entries found. Processing...`)
   }
